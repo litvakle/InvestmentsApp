@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A4421C828519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A4421C628519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld */; };
 		3AEFA2DE284E32510021330F /* InvestmentsAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */; };
 		3AEFA2E0284E32510021330F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DF284E32510021330F /* ContentView.swift */; };
 		3AEFA2E2284E32520021330F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEFA2E1284E32520021330F /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A4421C728519D8E00C0291C /* MarketOperationsContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MarketOperationsContainer.xcdatamodel; sourceTree = "<group>"; };
 		3AEFA2DA284E32510021330F /* InvestmentsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvestmentsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestmentsAppApp.swift; sourceTree = "<group>"; };
 		3AEFA2DF284E32510021330F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,6 +68,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A4421C528519D4600C0291C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3A4421C628519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		3AEFA2D1284E32510021330F = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +160,7 @@
 		3AEFA301284F33DE0021330F /* LocalStorage */ = {
 			isa = PBXGroup;
 			children = (
+				3A4421C528519D4600C0291C /* Models */,
 				3AEFA304284F37C60021330F /* LocalStorageManager.swift */,
 				3AEFA306284F37DB0021330F /* CoreDataManager.swift */,
 				3AEFA308284F37FC0021330F /* MockManager.swift */,
@@ -245,6 +256,7 @@
 				3AEFA30D284F38A50021330F /* Date+Extension.swift in Sources */,
 				3AEFA2E0284E32510021330F /* ContentView.swift in Sources */,
 				3AEFA300284F33BC0021330F /* AlphaVintageService.swift in Sources */,
+				3A4421C828519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld in Sources */,
 				3AEFA2F2284E35440021330F /* PortfolioView.swift in Sources */,
 				3AEFA2F9284F334F0021330F /* OperationsViewModel.swift in Sources */,
 				3AEFA2EF284E33860021330F /* MarketData.swift in Sources */,
@@ -455,6 +467,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3A4421C628519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3A4421C728519D8E00C0291C /* MarketOperationsContainer.xcdatamodel */,
+			);
+			currentVersion = 3A4421C728519D8E00C0291C /* MarketOperationsContainer.xcdatamodel */;
+			path = MarketOperationsContainer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3AEFA2D2284E32510021330F /* Project object */;
 }

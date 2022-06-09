@@ -17,9 +17,9 @@ struct MarketOperation: Identifiable {
         return quantity * price
     }
     
-    enum OperationType: Identifiable {
-        case buy
-        case sell
+    enum OperationType: String, Identifiable {
+        case buy = "buy"
+        case sell = "sell"
         
         var text: String {
             switch self {

@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct InvestmentsAppApp: App {
-    @StateObject var localStorage = LocalStorageViewModel(storageManager: MockManager())
+    @StateObject var localStorage = LocalStorageViewModel(storageManager: CoreDataManager())
     @StateObject var viewRouter = ViewsRouter()
     
     var body: some Scene {

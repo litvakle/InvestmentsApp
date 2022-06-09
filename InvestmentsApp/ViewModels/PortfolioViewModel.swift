@@ -86,6 +86,6 @@ class PortfolioViewModel: ObservableObject {
         
         self.totalCost = totalCost
         self.totalProfit = totalProfit
-        totalProfitability = totalProfit / totalExpenses * 100
+        totalProfitability = totalExpenses == 0 ? 0 : totalProfit / totalExpenses * 100
     }
 }
