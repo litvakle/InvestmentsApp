@@ -1,5 +1,5 @@
 //
-//  LocalStorageViewModel.swift
+//  LocalStorage.swift
 //  InvestmentsApp
 //
 //  Created by Lev Litvak on 08.06.2022.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class LocalStorageViewModel: ObservableObject {
+class LocalStorage: ObservableObject {
     @Published var operations: [MarketOperation] = []
     
     var storageManager: LocalStorageManager
@@ -16,7 +16,7 @@ class LocalStorageViewModel: ObservableObject {
     init(storageManager: LocalStorageManager) {
         self.storageManager = storageManager
         
-        loadOperations()
+        self.loadOperations()
     }
     
     func loadOperations() {

@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A149A2028573F1A009BF077 /* StockMarketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A149A1F28573F1A009BF077 /* StockMarketService.swift */; };
 		3A4421C828519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A4421C628519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld */; };
+		3A461E3328523350002417DA /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A461E3228523350002417DA /* NetworkManager.swift */; };
 		3AEFA2DE284E32510021330F /* InvestmentsAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */; };
 		3AEFA2E0284E32510021330F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DF284E32510021330F /* ContentView.swift */; };
 		3AEFA2E2284E32520021330F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEFA2E1284E32520021330F /* Assets.xcassets */; };
@@ -19,7 +21,7 @@
 		3AEFA2F6284F2C9A0021330F /* OperationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2F5284F2C9A0021330F /* OperationView.swift */; };
 		3AEFA2F9284F334F0021330F /* OperationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2F8284F334F0021330F /* OperationsViewModel.swift */; };
 		3AEFA2FB284F33590021330F /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2FA284F33590021330F /* PortfolioViewModel.swift */; };
-		3AEFA2FE284F33950021330F /* StockMarketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2FD284F33950021330F /* StockMarketService.swift */; };
+		3AEFA2FE284F33950021330F /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2FD284F33950021330F /* StockData.swift */; };
 		3AEFA300284F33BC0021330F /* AlphaVintageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2FF284F33BC0021330F /* AlphaVintageService.swift */; };
 		3AEFA303284F37990021330F /* OperationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA302284F37990021330F /* OperationViewModel.swift */; };
 		3AEFA305284F37C60021330F /* LocalStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA304284F37C60021330F /* LocalStorageManager.swift */; };
@@ -28,11 +30,13 @@
 		3AEFA30D284F38A50021330F /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA30B284F38A50021330F /* Date+Extension.swift */; };
 		3AEFA30E284F38A50021330F /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA30C284F38A50021330F /* View+Extension.swift */; };
 		3AEFA310284FA42B0021330F /* ViewsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA30F284FA42B0021330F /* ViewsRouter.swift */; };
-		3AEFA312285085E80021330F /* LocalStorageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA311285085E80021330F /* LocalStorageViewModel.swift */; };
+		3AEFA312285085E80021330F /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA311285085E80021330F /* LocalStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A149A1F28573F1A009BF077 /* StockMarketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockMarketService.swift; sourceTree = "<group>"; };
 		3A4421C728519D8E00C0291C /* MarketOperationsContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MarketOperationsContainer.xcdatamodel; sourceTree = "<group>"; };
+		3A461E3228523350002417DA /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		3AEFA2DA284E32510021330F /* InvestmentsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvestmentsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestmentsAppApp.swift; sourceTree = "<group>"; };
 		3AEFA2DF284E32510021330F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,7 +49,7 @@
 		3AEFA2F5284F2C9A0021330F /* OperationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationView.swift; sourceTree = "<group>"; };
 		3AEFA2F8284F334F0021330F /* OperationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationsViewModel.swift; sourceTree = "<group>"; };
 		3AEFA2FA284F33590021330F /* PortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
-		3AEFA2FD284F33950021330F /* StockMarketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockMarketService.swift; sourceTree = "<group>"; };
+		3AEFA2FD284F33950021330F /* StockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 		3AEFA2FF284F33BC0021330F /* AlphaVintageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaVintageService.swift; sourceTree = "<group>"; };
 		3AEFA302284F37990021330F /* OperationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationViewModel.swift; sourceTree = "<group>"; };
 		3AEFA304284F37C60021330F /* LocalStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageManager.swift; sourceTree = "<group>"; };
@@ -54,7 +58,7 @@
 		3AEFA30B284F38A50021330F /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		3AEFA30C284F38A50021330F /* View+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		3AEFA30F284FA42B0021330F /* ViewsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsRouter.swift; sourceTree = "<group>"; };
-		3AEFA311285085E80021330F /* LocalStorageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageViewModel.swift; sourceTree = "<group>"; };
+		3AEFA311285085E80021330F /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,12 +72,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A149A1E28573F0D009BF077 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				3A149A1F28573F1A009BF077 /* StockMarketService.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		3A149A2128573F37009BF077 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				3A461E3228523350002417DA /* NetworkManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		3A149A2228573F54009BF077 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				3AEFA304284F37C60021330F /* LocalStorageManager.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		3A4421C528519D4600C0291C /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				3A4421C628519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		3A6027482858970C006DEA2B /* StockMarket */ = {
+			isa = PBXGroup;
+			children = (
+				3A149A1E28573F0D009BF077 /* Protocols */,
+				3AEFA2FF284F33BC0021330F /* AlphaVintageService.swift */,
+			);
+			path = StockMarket;
 			sourceTree = "<group>";
 		};
 		3AEFA2D1284E32510021330F = {
@@ -101,6 +138,7 @@
 				3AEFA2F7284F2FE30021330F /* ViewModels */,
 				3AEFA2FC284F33670021330F /* Services */,
 				3AEFA301284F33DE0021330F /* LocalStorage */,
+				3A149A2128573F37009BF077 /* Utilities */,
 				3AEFA30A284F38840021330F /* Extensions */,
 				3AEFA2E1284E32520021330F /* Assets.xcassets */,
 				3AEFA2E3284E32520021330F /* Preview Content */,
@@ -140,7 +178,8 @@
 			isa = PBXGroup;
 			children = (
 				3AEFA30F284FA42B0021330F /* ViewsRouter.swift */,
-				3AEFA311285085E80021330F /* LocalStorageViewModel.swift */,
+				3AEFA311285085E80021330F /* LocalStorage.swift */,
+				3AEFA2FD284F33950021330F /* StockData.swift */,
 				3AEFA2FA284F33590021330F /* PortfolioViewModel.swift */,
 				3AEFA2F8284F334F0021330F /* OperationsViewModel.swift */,
 				3AEFA302284F37990021330F /* OperationViewModel.swift */,
@@ -151,8 +190,7 @@
 		3AEFA2FC284F33670021330F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				3AEFA2FD284F33950021330F /* StockMarketService.swift */,
-				3AEFA2FF284F33BC0021330F /* AlphaVintageService.swift */,
+				3A6027482858970C006DEA2B /* StockMarket */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -160,8 +198,8 @@
 		3AEFA301284F33DE0021330F /* LocalStorage */ = {
 			isa = PBXGroup;
 			children = (
+				3A149A2228573F54009BF077 /* Protocols */,
 				3A4421C528519D4600C0291C /* Models */,
-				3AEFA304284F37C60021330F /* LocalStorageManager.swift */,
 				3AEFA306284F37DB0021330F /* CoreDataManager.swift */,
 				3AEFA308284F37FC0021330F /* MockManager.swift */,
 			);
@@ -247,12 +285,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A149A2028573F1A009BF077 /* StockMarketService.swift in Sources */,
 				3AEFA2F6284F2C9A0021330F /* OperationView.swift in Sources */,
 				3AEFA305284F37C60021330F /* LocalStorageManager.swift in Sources */,
 				3AEFA2F4284F2C880021330F /* OperationsView.swift in Sources */,
+				3A461E3328523350002417DA /* NetworkManager.swift in Sources */,
 				3AEFA30E284F38A50021330F /* View+Extension.swift in Sources */,
 				3AEFA309284F37FC0021330F /* MockManager.swift in Sources */,
-				3AEFA2FE284F33950021330F /* StockMarketService.swift in Sources */,
+				3AEFA2FE284F33950021330F /* StockData.swift in Sources */,
 				3AEFA30D284F38A50021330F /* Date+Extension.swift in Sources */,
 				3AEFA2E0284E32510021330F /* ContentView.swift in Sources */,
 				3AEFA300284F33BC0021330F /* AlphaVintageService.swift in Sources */,
@@ -262,7 +302,7 @@
 				3AEFA2EF284E33860021330F /* MarketData.swift in Sources */,
 				3AEFA303284F37990021330F /* OperationViewModel.swift in Sources */,
 				3AEFA310284FA42B0021330F /* ViewsRouter.swift in Sources */,
-				3AEFA312285085E80021330F /* LocalStorageViewModel.swift in Sources */,
+				3AEFA312285085E80021330F /* LocalStorage.swift in Sources */,
 				3AEFA2DE284E32510021330F /* InvestmentsAppApp.swift in Sources */,
 				3AEFA2ED284E32820021330F /* MarketOperation.swift in Sources */,
 				3AEFA307284F37DB0021330F /* CoreDataManager.swift in Sources */,

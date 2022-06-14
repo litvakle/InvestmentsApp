@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OperationView: View {
-    @EnvironmentObject private var localStorage: LocalStorageViewModel
+    @EnvironmentObject private var localStorage: LocalStorage
     @EnvironmentObject private var viewRouter: ViewsRouter
     @ObservedObject var vm: OperationViewModel
     
@@ -123,10 +123,10 @@ struct OperationView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             OperationView(vm: OperationViewModel(operation: MarketOperation.mockData[0]))
-                .environmentObject(LocalStorageViewModel(storageManager: MockManager()))
+                .environmentObject(LocalStorage(storageManager: MockManager()))
             
             OperationView(vm: OperationViewModel())
-                .environmentObject(LocalStorageViewModel(storageManager: MockManager()))
+                .environmentObject(LocalStorage(storageManager: MockManager()))
         }
     }
 }

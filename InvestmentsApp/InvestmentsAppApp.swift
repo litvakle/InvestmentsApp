@@ -9,7 +9,8 @@ import SwiftUI
 
 @main
 struct InvestmentsAppApp: App {
-    @StateObject var localStorage = LocalStorageViewModel(storageManager: CoreDataManager())
+    @StateObject var localStorage = LocalStorage(storageManager: CoreDataManager())
+    @StateObject var stockData = StockData(stockMarketService: AlphaVintageService())
     @StateObject var viewRouter = ViewsRouter()
     
     var body: some Scene {
@@ -17,6 +18,10 @@ struct InvestmentsAppApp: App {
             ContentView()
                 .environmentObject(localStorage)
                 .environmentObject(viewRouter)
+                .environmentObject(stockData)
+                .onAppear {
+                    stockData.subscribeTo(localStorage: localStorage)
+                }
         }
     }
 }

@@ -14,20 +14,32 @@ class PortfolioViewModel: ObservableObject {
     @Published private(set) var totalProfit: Double = 0
     @Published private(set) var totalProfitability: Double = 0
     
-    private var localStorage: LocalStorageViewModel!
+    private var localStorage: LocalStorage!
+    private var stockData: StockData!
+    
     private var subsriptions = Set<AnyCancellable>()
     
-    func set(localStorage: LocalStorageViewModel) {
+    func subscribeTo(localStorage: LocalStorage, stockData: StockData) {
         self.localStorage = localStorage
+        self.stockData = stockData
         
         setupSubsriptions()
     }
     
     private func setupSubsriptions() {
         localStorage.$operations
-            .sink { [unowned self] operations in
-                updatePortfolioItems(for: operations)
-                updateTotalParameters()
+            .sink { [unowned self] _ in
+                self.updatePortfolioItems()
+                self.updateTotalParameters()
+            }
+            .store(in: &subsriptions)
+        
+        stockData.$prices
+            .filter({ !$0.isEmpty })
+            .debounce(for: 0.5, scheduler: DispatchQueue.main)
+            .sink { [unowned self] prices in
+                self.updatePortfolioItems()
+                self.updateTotalParameters()
             }
             .store(in: &subsriptions)
     }
@@ -44,10 +56,11 @@ class PortfolioViewModel: ObservableObject {
         var profitability: Double = 0
     }
     
-    private func updatePortfolioItems(for operations: [MarketOperation]) {
+    private func updatePortfolioItems(logString: String = "") {
+        print(logString)
         var ticketOperations = [String: [MarketOperation]]()
 
-        for operation in operations {
+        for operation in localStorage.operations {
             ticketOperations[operation.ticket, default: []].append(operation)
         }
         
@@ -57,7 +70,7 @@ class PortfolioViewModel: ObservableObject {
             var portfolioItem = PortfolioItem()
             
             portfolioItem.ticket = item.key
-            portfolioItem.price = Double(Int.random(in: 30...400)) // Mock
+            portfolioItem.price = stockData.prices[item.key] ?? 0
             
             for operation in ticketOperations[item.key]! {
                 portfolioItem.quantity += operation.type == .buy ? operation.quantity : -operation.quantity

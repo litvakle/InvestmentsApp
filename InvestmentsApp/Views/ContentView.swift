@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var localStorage: LocalStorageViewModel
-    @EnvironmentObject var viewRouter: ViewsRouter
+    @EnvironmentObject private var localStorage: LocalStorage
+    @EnvironmentObject private var viewRouter: ViewsRouter
+    @EnvironmentObject private var stockData: StockData
+    
+    @StateObject private var portfolioViewModel = PortfolioViewModel()
     
     var body: some View {
         ZStack {
@@ -25,11 +28,15 @@ struct ContentView: View {
                     .zIndex(1)
             }
         }
+        .onAppear {
+            portfolioViewModel.subscribeTo(localStorage: localStorage,
+                                           stockData: stockData)
+        }
     }
     
     var mainView: some View {
         TabView {
-            PortfolioView()
+            PortfolioView(vm: portfolioViewModel)
                 .tabItem {
                     VStack {
                         Image(systemName: "dollarsign.circle")
@@ -49,9 +56,15 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static var localStorage = LocalStorage(storageManager: MockManager())
+    static var stockData = StockData(stockMarketService: AlphaVintageService())
     static var previews: some View {
         ContentView()
-            .environmentObject(LocalStorageViewModel(storageManager: MockManager()))
+            .environmentObject(localStorage)
+            .environmentObject(stockData)
             .environmentObject(ViewsRouter())
+            .onAppear {
+                stockData.subscribeTo(localStorage: localStorage)
+            }
     }
 }

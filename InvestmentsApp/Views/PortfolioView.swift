@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct PortfolioView: View {
-    @EnvironmentObject var localStorage: LocalStorageViewModel
-    @StateObject var vm = PortfolioViewModel()
+    @ObservedObject var vm: PortfolioViewModel
     
     var body: some View {
         VStack {
@@ -21,9 +20,6 @@ struct PortfolioView: View {
                 details
             }
             .listStyle(.plain)
-        }
-        .onAppear {
-            vm.set(localStorage: localStorage)
         }
     }
     
@@ -104,8 +100,15 @@ struct PortfolioView: View {
 }
 
 struct PortfolioView_Previews: PreviewProvider {
+    static var localStorage = LocalStorage(storageManager: MockManager())
+    static var stockData = StockData(stockMarketService: AlphaVintageService())
+    static var portfolioViewModel = PortfolioViewModel()
+    
     static var previews: some View {
-        PortfolioView()
-            .environmentObject(LocalStorageViewModel(storageManager: MockManager()))
+        PortfolioView(vm: portfolioViewModel)
+            .onAppear {
+                stockData.subscribeTo(localStorage: localStorage)
+                portfolioViewModel.subscribeTo(localStorage: localStorage, stockData: stockData)
+            }
     }
 }

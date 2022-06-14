@@ -12,13 +12,13 @@ class OperationsViewModel: ObservableObject {
     @Published private(set) var ticketOperations: [String: [MarketOperation]] = [:]
     
     private var subsriptions = Set<AnyCancellable>()
-    private var localStorage: LocalStorageViewModel!
+    private var localStorage: LocalStorage!
     
     var tickets: [String] {
         return Array(ticketOperations.keys)
     }
     
-    func set(localStorage: LocalStorageViewModel) {
+    func set(localStorage: LocalStorage) {
         self.localStorage = localStorage
         
         setupSubsriptions()
