@@ -28,17 +28,16 @@ class PortfolioViewModel: ObservableObject {
     
     private func setupSubsriptions() {
         localStorage.$operations
-            .sink { [unowned self] _ in
-                self.updatePortfolioItems()
+            .sink { [unowned self] operations in
+                self.updatePortfolioItems(operations: operations, prices: self.stockData.prices)
                 self.updateTotalParameters()
             }
             .store(in: &subsriptions)
         
         stockData.$prices
             .filter({ !$0.isEmpty })
-            .debounce(for: 0.5, scheduler: DispatchQueue.main)
             .sink { [unowned self] prices in
-                self.updatePortfolioItems()
+                self.updatePortfolioItems(operations: self.localStorage.operations, prices: prices)
                 self.updateTotalParameters()
             }
             .store(in: &subsriptions)
@@ -56,11 +55,9 @@ class PortfolioViewModel: ObservableObject {
         var profitability: Double = 0
     }
     
-    private func updatePortfolioItems(logString: String = "") {
-        print(logString)
+    private func updatePortfolioItems(operations: [MarketOperation], prices: [String: Double]) {
         var ticketOperations = [String: [MarketOperation]]()
-
-        for operation in localStorage.operations {
+        for operation in operations {
             ticketOperations[operation.ticket, default: []].append(operation)
         }
         
@@ -70,7 +67,7 @@ class PortfolioViewModel: ObservableObject {
             var portfolioItem = PortfolioItem()
             
             portfolioItem.ticket = item.key
-            portfolioItem.price = stockData.prices[item.key] ?? 0
+            portfolioItem.price = prices[item.key] ?? 0
             
             for operation in ticketOperations[item.key]! {
                 portfolioItem.quantity += operation.type == .buy ? operation.quantity : -operation.quantity

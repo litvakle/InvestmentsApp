@@ -43,6 +43,9 @@ struct ContentView: View {
                         Text("Portfolio")
                     }
                 }
+                .refreshable {
+                    stockData.updateAllPrices()
+                }
             
             OperationsView()
                 .tabItem {
