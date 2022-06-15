@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol StockMarketService {
-    func getPrices(for tickets: [String]) -> AnyPublisher<[String: Double], Error>
+    func getPrices(for tickets: [String]) -> AnyPublisher<[String: Double], NetworkManager.APIError>
 }

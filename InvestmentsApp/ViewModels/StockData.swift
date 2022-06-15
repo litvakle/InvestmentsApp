@@ -37,8 +37,9 @@ class StockData: ObservableObject {
     
     private func setupSubsriptions() {
         let publisher = localStorage.$operations
-            .map { [unowned self] operations in
-                return Array(Set(operations.map { $0.ticket })).filter { self.prices[$0] == nil }
+            .map { [unowned self] operations -> [String] in
+                let ticketsWithoutPrices = Array(Set(operations.map { $0.ticket })).filter { self.prices[$0] == nil }
+                return ticketsWithoutPrices
             }
             .eraseToAnyPublisher()
         
@@ -48,28 +49,26 @@ class StockData: ObservableObject {
     private func handleOperationsPublisher(publisher: AnyPublisher<[String], Never>) {
         publisher
             .filter({ !$0.isEmpty })
-            .handleEvents(receiveOutput: {  [unowned self] tickets in
+            .handleEvents(receiveOutput: { [unowned self] tickets in
                 self.ticketsWithUpdatingPrices = Set(tickets)
             })
-            .flatMap({ [unowned self] tickets in
-                return self.stockMarketService.getPrices(for: tickets)
-            })
-            .receive(on: DispatchQueue.main)
-            .sink { [unowned self] (completion) in
-                let result = NetworkManager.handleCompletion(completion)
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let apiError):
-                    self.errorMessage = "Error fetching prices: \(apiError.localizedDescription)"
-                    self.showAlert = true
-                    print(apiError.localizedDescription)
-                }
-                self.ticketsWithUpdatingPrices.removeAll()
-            } receiveValue: { [unowned self] receivedPrices in
+            .flatMap { [unowned self] tickets in
+                self.stockMarketService.getPrices(for: tickets)
+                    .receive(on: DispatchQueue.main)
+                    .catch { apiError -> Just<[String: Double]> in
+                        print(apiError.localizedDescription)
+                        self.errorMessage = "Error fetching prices: \(apiError.localizedDescription)"
+                        self.showAlert = true
+                        
+                        return Just([:])
+                    }
+            }
+            .sink { [unowned self] receivedPrices in
                 for item in receivedPrices {
                     self.prices[item.key] = item.value
                 }
+                
+                print(prices)
                 self.ticketsWithUpdatingPrices.removeAll()
             }
             .store(in: &subsriptions)

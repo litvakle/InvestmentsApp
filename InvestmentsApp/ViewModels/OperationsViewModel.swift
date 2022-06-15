@@ -15,7 +15,7 @@ class OperationsViewModel: ObservableObject {
     private var localStorage: LocalStorage!
     
     var tickets: [String] {
-        return Array(ticketOperations.keys)
+        return Array(ticketOperations.keys).sorted()
     }
     
     func set(localStorage: LocalStorage) {

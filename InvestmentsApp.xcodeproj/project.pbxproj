@@ -10,6 +10,7 @@
 		3A149A2028573F1A009BF077 /* StockMarketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A149A1F28573F1A009BF077 /* StockMarketService.swift */; };
 		3A4421C828519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A4421C628519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld */; };
 		3A461E3328523350002417DA /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A461E3228523350002417DA /* NetworkManager.swift */; };
+		3A60274A285A0E3C006DEA2B /* MockStockMarketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A602749285A0E3C006DEA2B /* MockStockMarketService.swift */; };
 		3AEFA2DE284E32510021330F /* InvestmentsAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */; };
 		3AEFA2E0284E32510021330F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DF284E32510021330F /* ContentView.swift */; };
 		3AEFA2E2284E32520021330F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEFA2E1284E32520021330F /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 		3A149A1F28573F1A009BF077 /* StockMarketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockMarketService.swift; sourceTree = "<group>"; };
 		3A4421C728519D8E00C0291C /* MarketOperationsContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MarketOperationsContainer.xcdatamodel; sourceTree = "<group>"; };
 		3A461E3228523350002417DA /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		3A602749285A0E3C006DEA2B /* MockStockMarketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStockMarketService.swift; sourceTree = "<group>"; };
 		3AEFA2DA284E32510021330F /* InvestmentsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvestmentsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestmentsAppApp.swift; sourceTree = "<group>"; };
 		3AEFA2DF284E32510021330F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			children = (
 				3A149A1E28573F0D009BF077 /* Protocols */,
 				3AEFA2FF284F33BC0021330F /* AlphaVintageService.swift */,
+				3A602749285A0E3C006DEA2B /* MockStockMarketService.swift */,
 			);
 			path = StockMarket;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				3A4421C828519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld in Sources */,
 				3AEFA2F2284E35440021330F /* PortfolioView.swift in Sources */,
 				3AEFA2F9284F334F0021330F /* OperationsViewModel.swift in Sources */,
+				3A60274A285A0E3C006DEA2B /* MockStockMarketService.swift in Sources */,
 				3AEFA2EF284E33860021330F /* MarketData.swift in Sources */,
 				3AEFA303284F37990021330F /* OperationViewModel.swift in Sources */,
 				3AEFA310284FA42B0021330F /* ViewsRouter.swift in Sources */,
@@ -443,6 +447,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -472,6 +477,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
