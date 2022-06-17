@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct MarketOperation: Identifiable {
+struct MarketOperation: Identifiable, Hashable {
     var id: String = UUID().uuidString
     var type: OperationType
     var date: Date

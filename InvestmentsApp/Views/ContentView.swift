@@ -20,14 +20,17 @@ struct ContentView: View {
             
             if case .newOperation = viewRouter.currentView {
                 OperationView(vm: OperationViewModel())
+                    .transition(.scale)
                     .zIndex(1)
             }
             
             if case .editOperation(let operation) = viewRouter.currentView {
                 OperationView(vm: OperationViewModel(operation: operation))
+                    .transition(.scale)
                     .zIndex(1)
             }
         }
+        .animation(.easeInOut, value: viewRouter.currentView)
         .onAppear {
             portfolioViewModel.subscribeTo(localStorage: localStorage,
                                            stockData: stockData)
@@ -60,14 +63,26 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var localStorage = LocalStorage(storageManager: MockManager())
-    static var stockData = StockData(stockMarketService: AlphaVintageService())
+    static var stockData = StockData(stockMarketService: MockStockMarketService())
     static var previews: some View {
-        ContentView()
-            .environmentObject(localStorage)
-            .environmentObject(stockData)
-            .environmentObject(ViewsRouter())
-            .onAppear {
-                stockData.subscribeTo(localStorage: localStorage)
-            }
+        Group {
+            ContentView()
+                .environmentObject(localStorage)
+                .environmentObject(stockData)
+                .environmentObject(ViewsRouter())
+                .onAppear {
+                    stockData.subscribeTo(localStorage: localStorage)
+                }
+
+            ContentView()
+                .preferredColorScheme(.dark)
+                .environmentObject(localStorage)
+                .environmentObject(stockData)
+                .environmentObject(ViewsRouter())
+                .onAppear {
+                    stockData.subscribeTo(localStorage: localStorage)
+                }
+
+        }
     }
 }

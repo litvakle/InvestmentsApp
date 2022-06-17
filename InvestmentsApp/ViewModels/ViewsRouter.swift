@@ -10,7 +10,7 @@ import Foundation
 class ViewsRouter: ObservableObject {
     @Published private(set) var currentView: AppViews = .main
     
-    enum AppViews {
+    enum AppViews: Hashable {
         case main
         case newOperation
         case editOperation(operation: MarketOperation)

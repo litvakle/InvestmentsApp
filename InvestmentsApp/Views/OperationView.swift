@@ -12,9 +12,13 @@ struct OperationView: View {
     @EnvironmentObject private var viewRouter: ViewsRouter
     @ObservedObject var vm: OperationViewModel
     
+    @State var dissappearAnchor: UnitPoint = .topLeading
+    
+    @FocusState var activeTextField: OperationViewModel.OperationTextField?
+    
     var body: some View {
         ZStack {
-            Color.white.ignoresSafeArea()
+            Color.themeBackground.ignoresSafeArea()
             
             VStack {
                 toolbar
@@ -22,21 +26,32 @@ struct OperationView: View {
                 List {
                     inputFields
                         
-                    HStack {
-                        Text("Total sum")
-                        Text(vm.sum)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .foregroundColor(vm.type == .buy ? .green : .red)
-                    }
-                    .font(.headline)
+                    totalSum
                 }
                 .padding()
                 .listStyle(.plain)
                 
                 Spacer()
+                
+                if vm.activeTextField != nil && vm.textFieldIsValid[vm.activeTextField!]! {
+                    Button {
+                        vm.focusOnTheNextTextField()
+                    } label: {
+                        Text("Done")
+                            .padding()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .transition(.scale(scale: 0, anchor: .trailing))
+                }
+            }
+            .animation(.easeInOut, value: vm.textFieldIsValid)
+            .onChange(of: activeTextField) { newValue in
+                vm.activeTextField = newValue
+            }
+            .onChange(of: vm.activeTextField) { newValue in
+                activeTextField = newValue
             }
         }
-        
     }
     
     var toolbar: some View {
@@ -44,10 +59,9 @@ struct OperationView: View {
             Button {
                 viewRouter.showMainView()
             } label: {
-                Image(systemName: "chevron.backward.circle.fill")
-                    .font(.largeTitle)
-                    .padding(.horizontal)
+                Image(systemName: "chevron.backward")
             }
+            .buttonStyle(RoundButtonStyle())
             
             Spacer()
             
@@ -60,62 +74,112 @@ struct OperationView: View {
                 localStorage.save(operation: vm.createOperation())
                 viewRouter.showMainView()
             } label: {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.largeTitle)
-                    .padding(.horizontal)
+                Image(systemName: "checkmark")
             }
+            .buttonStyle(RoundButtonStyle())
             .disabled(!vm.canSave)
         }
     }
     
-    var formatter: NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        
-        return formatter
+    var totalSum: some View {
+        HStack {
+            Text("Total sum")
+            Text(vm.sum.toCurrencyString())
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .font(.headline)
     }
-    
+}
+
+extension OperationView {
     var inputFields: some View {
         Group {
-            Picker("Title", selection: $vm.type) {
-                Text("Buy")
-                    .tag(MarketOperation.OperationType.buy)
-                
-                Text("Sell")
-                    .tag(MarketOperation.OperationType.sell)
-            }
-            .pickerStyle(.segmented)
+            operationType
             
             DatePicker("Date", selection: $vm.date, in: ...Date(), displayedComponents: .date)
             
-            HStack {
-                Text("Ticket")
+            ticket
                 
-                TextField("...", text: $vm.ticket)
-                    .keyboardType(.alphabet)
-                    .textInputAutocapitalization(.characters)
-                    .disableAutocorrection(true)
-                    .multilineTextAlignment(.trailing)
-            }
+            quantity
             
-            HStack {
-                Text("Quantity")
-                TextField("Enter quantity...", value: $vm.quantity, formatter: formatter)
-                    .keyboardType(.decimalPad)
-                    .multilineTextAlignment(.trailing)
-                    .foregroundColor(vm.type == .buy ? .green : .red)
-            }
+            price
+        }
+    }
+    
+    var operationType: some View {
+        Picker("Title", selection: $vm.type) {
+            Text("Buy")
+                .tag(MarketOperation.OperationType.buy)
             
-            HStack {
-                Text("Price")
-                
-                TextField("Enter Price...", value: $vm.price, formatter: formatter)
-                    .keyboardType(.decimalPad)
-                    .multilineTextAlignment(.trailing)
-                    .foregroundColor(vm.type == .buy ? .green : .red)
+            Text("Sell")
+                .tag(MarketOperation.OperationType.sell)
+        }
+        .pickerStyle(.segmented)
+    }
+    
+    var ticket: some View {
+        TextField("XXX", text: $vm.ticket)
+            .focused($activeTextField, equals: .ticket)
+            .keyboardType(.alphabet)
+            .textInputAutocapitalization(.characters)
+            .disableAutocorrection(true)
+            .textFieldStyle(OperationTextFieldStyle(
+                title: "Ticket", currentTextField: .ticket, vm: vm))
+    }
+    
+    var quantity: some View {
+        TextField("0.000", value: $vm.quantity, formatter: formatter(fractionDigits: 4))
+            .focused($activeTextField, equals: .quantity)
+            .keyboardType(.decimalPad)
+            .textFieldStyle(
+                OperationTextFieldStyle(
+                    title: "Quantity", currentTextField: .quantity, vm: vm))
+    }
+    
+    var price: some View {
+        TextField("0.00", value: $vm.price, formatter: formatter(fractionDigits: 8))
+            .focused($activeTextField, equals: .price)
+            .keyboardType(.decimalPad)
+            .textFieldStyle(
+                OperationTextFieldStyle(
+                    title: "Price ($)", currentTextField: .price, vm: vm))
+    }
+    
+    func formatter(fractionDigits: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.zeroSymbol = ""
+        formatter.maximumFractionDigits = fractionDigits
+        formatter.locale = .current
+        
+        return formatter
+    }
+}
+
+struct OperationTextFieldStyle: TextFieldStyle {
+    var title: String
+    var currentTextField: OperationViewModel.OperationTextField
+    var vm: OperationViewModel
+    
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        HStack {
+            Text(title)
+
+            configuration
+                .multilineTextAlignment(.trailing)
+
+            if vm.textFieldIsValid[currentTextField] ?? false {
+                Button {
+                    vm.focusOnTheNextTextField()
+                } label: {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.green)
+                }
+                .transition(.scale(scale: 0.1, anchor: .trailing))
+                .buttonStyle(.plain)
+                .disabled(vm.activeTextField != currentTextField)
             }
         }
+        .animation(.easeInOut, value: vm.textFieldIsValid[currentTextField])
     }
 }
 
@@ -124,6 +188,10 @@ struct OperationView_Previews: PreviewProvider {
         Group {
             OperationView(vm: OperationViewModel(operation: MarketOperation.mockData[0]))
                 .environmentObject(LocalStorage(storageManager: MockManager()))
+            
+            OperationView(vm: OperationViewModel(operation: MarketOperation.mockData[0]))
+                .environmentObject(LocalStorage(storageManager: MockManager()))
+                .preferredColorScheme(.dark)
             
             OperationView(vm: OperationViewModel())
                 .environmentObject(LocalStorage(storageManager: MockManager()))

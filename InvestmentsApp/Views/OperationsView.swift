@@ -16,7 +16,9 @@ struct OperationsView: View {
         VStack {
             toolbar
             
-            operationList
+            List {
+                operationList
+            }
         }
         .onAppear {
             vm.set(localStorage: localStorage)
@@ -26,48 +28,40 @@ struct OperationsView: View {
     var toolbar: some View {
         ZStack {
             Text("Operations")
-                .font(.largeTitle)
+                .font(.headline)
                 .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
             
-            HStack {
-                Spacer()
-                
-                Button {
-                    viewRouter.showNewOperationView()
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.largeTitle)
-                        .padding(.horizontal)
-                }
+            Button {
+                viewRouter.showNewOperationView()
+            } label: {
+                Image(systemName: "plus")
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .buttonStyle(RoundButtonStyle())
         }
+        .frame(height: 50)
     }
     
     var operationList: some View {
-        List {
-            ForEach(vm.tickets, id: \.self) { ticket in
-                Section {
-                    ForEach(vm.ticketOperations[ticket]!) { operation in
-                        Button {
-                            viewRouter.showEditOperationView(operation: operation)
-                        } label: {
-                            OperationRow(operation: operation)
-                        }
-                        .buttonStyle(.plain)
+        ForEach(vm.tickets, id: \.self) { ticket in
+            Section {
+                ForEach(vm.ticketOperations[ticket]!) { operation in
+                    Button {
+                        viewRouter.showEditOperationView(operation: operation)
+                    } label: {
+                        OperationRow(operation: operation)
                     }
-                    .onDelete { indexSet in
-                        let operation = vm.ticketOperations[ticket]![indexSet.first!]
-                        localStorage.delete(operation: operation)
-                    }
-                } header: {
-                    Text(ticket)
-                        .font(.headline)
+                    .buttonStyle(.plain)
                 }
+                .onDelete { indexSet in
+                    let operation = vm.ticketOperations[ticket]![indexSet.first!]
+                    localStorage.delete(operation: operation)
+                }
+            } header: {
+                Text(ticket)
+                    .font(.headline)
             }
         }
-        .listStyle(.plain)
     }
 }
 
@@ -101,8 +95,15 @@ struct OperationRow: View {
 
 struct OperationsView_Previews: PreviewProvider {
     static var previews: some View {
-        OperationsView()
-            .environmentObject(LocalStorage(storageManager: MockManager()))
-            .environmentObject(ViewsRouter())
+        Group {
+            OperationsView()
+                .environmentObject(LocalStorage(storageManager: MockManager()))
+                .environmentObject(ViewsRouter())
+            
+            OperationsView()
+                .environmentObject(LocalStorage(storageManager: MockManager()))
+                .environmentObject(ViewsRouter())
+                .preferredColorScheme(.dark)
+        }
     }
 }

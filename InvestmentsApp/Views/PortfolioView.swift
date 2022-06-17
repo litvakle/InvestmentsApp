@@ -13,14 +13,16 @@ struct PortfolioView: View {
     
     var body: some View {
         VStack {
-            toolbar
+            toolBar
             
             List {
-                summary
-                
-                details
+                Section {
+                    summary
+                }
+                Section {
+                    details
+                }
             }
-            .listStyle(.plain)
         }
         .alert("Attention", isPresented: $stockData.showAlert) {
             Button("OK") {}
@@ -29,64 +31,40 @@ struct PortfolioView: View {
         }
     }
     
-    var toolbar: some View {
+    var toolBar: some View {
         Text("Portfolio")
-            .font(.largeTitle)
+            .font(.headline)
             .fontWeight(.bold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .frame(height: 50)
     }
     
     var summary: some View {
-        Section {
-            HStack {
-                Text("Total cost")
-                Spacer()
-                if stockData.ticketsWithUpdatingPrices.isEmpty {
-                    Text(String(format: "%.2f$", vm.totalCost))
-                } else {
-                    ProgressView()
-                }
-                
-            }
-            
-            HStack {
-                Text("Total profit")
-                Spacer()
-                if stockData.ticketsWithUpdatingPrices.isEmpty {
-                    Text(String(format: "%.2f$", vm.totalProfit))
+        Group {
+            if stockData.ticketsWithUpdatingPrices.isEmpty {
+                VStack(alignment: .leading) {
+                    Text(vm.totalCost.toCurrencyString())
+                        .font(.system(size: 50, weight: .regular))
+                    Text("\(vm.totalProfit.toCurrencyString()) (\(vm.totalProfitability.toPercentString()))")
+                        .font(.system(size: 25, weight: .regular))
                         .foregroundColor(vm.totalProfit >= 0 ? .green : .red)
-                } else {
-                    ProgressView()
                 }
-                
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .transition(.scale)
+            } else {
+                ProgressView()
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
-            
-            HStack {
-                Text("Total profitability")
-                Spacer()
-                if stockData.ticketsWithUpdatingPrices.isEmpty {
-                    Text(String(format: "%.2f\("%")%", vm.totalProfitability))
-                        .foregroundColor(vm.totalProfitability >= 0 ? .green : .red)
-                } else {
-                    ProgressView()
-                }
-                
-            }
-        } header: {
-            Text("Summary")
         }
-        .font(.headline)
+        .animation(.easeInOut, value: stockData.ticketsWithUpdatingPrices)
     }
     
     var details: some View {
-        Section {
+        VStack {
             ForEach(vm.items) { item in
                 DetailsRowView(item: item)
+                    .listRowBackground(Color.yellow)
+                    .padding(.vertical, 5)
             }
-        } header: {
-            Text("Details")
-                .font(.headline)
         }
     }
 }
@@ -102,15 +80,8 @@ struct DetailsRowView: View {
                     .font(.headline)
 
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text(String(format: "Quantity: %.2f", item.quantity))
-                        Text(String(format: "Price: %.2f$", item.price))
-                    }
-                    
-                    HStack {
-                        Text(String(format: "Expenses: %.2f$", item.expenses))
-                        Text(String(format: "Income: %.2f$", item.income))
-                    }
+                    Text("Quantity: \(item.quantity.toNumberString())")
+                    Text("Price: \(item.price.toCurrencyString())")
                 }
                 .foregroundColor(.secondary)
                 .font(.subheadline)
@@ -122,10 +93,10 @@ struct DetailsRowView: View {
                 ProgressView()
             } else if item.price != 0 {
                 VStack(alignment: .trailing) {
-                    Text(String(format: "%.2f$", item.currentCost))
-                    Text(String(format: "%.2f$", item.profit))
+                    Text(item.currentCost.toCurrencyString())
+                    Text(item.profit.toCurrencyString())
                         .foregroundColor(item.profit >= 0 ? .green: .red)
-                    Text(String(format: "%.2f\("%")%", item.profitability))
+                    Text(item.profitability.toPercentString())
                         .foregroundColor(item.profit >= 0 ? .green: .red)
                 }
             }
@@ -135,15 +106,25 @@ struct DetailsRowView: View {
 
 struct PortfolioView_Previews: PreviewProvider {
     static var localStorage = LocalStorage(storageManager: MockManager())
-    static var stockData = StockData(stockMarketService: AlphaVintageService())
+    static var stockData = StockData(stockMarketService: MockStockMarketService())
     static var portfolioViewModel = PortfolioViewModel()
     
     static var previews: some View {
-        PortfolioView(vm: portfolioViewModel)
-            .environmentObject(stockData)
-            .onAppear {
-                stockData.subscribeTo(localStorage: localStorage)
-                portfolioViewModel.subscribeTo(localStorage: localStorage, stockData: stockData)
-            }
+        Group {
+            PortfolioView(vm: portfolioViewModel)
+                .environmentObject(stockData)
+                .onAppear {
+                    stockData.subscribeTo(localStorage: localStorage)
+                    portfolioViewModel.subscribeTo(localStorage: localStorage, stockData: stockData)
+                }
+            
+            PortfolioView(vm: portfolioViewModel)
+                .environmentObject(stockData)
+                .preferredColorScheme(.dark)
+                .onAppear {
+                    stockData.subscribeTo(localStorage: localStorage)
+                    portfolioViewModel.subscribeTo(localStorage: localStorage, stockData: stockData)
+                }
+        }
     }
 }

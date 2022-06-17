@@ -33,10 +33,32 @@ class OperationsViewModel: ObservableObject {
     }
     
     private func updateTicketOperations(operations: [MarketOperation]) {
-        ticketOperations.removeAll()
+        let ticketsInStorage = Set(operations.map { $0.ticket })
+        let ticketsInCache = Set(ticketOperations.keys)
+        let ticketsToDeleteFromCache = ticketsInCache.subtracting(ticketsInStorage)
+        let ticketsToAddToCache = ticketsInStorage.subtracting(ticketsInCache)
         
-        for operation in operations {
-            ticketOperations[operation.ticket, default: []].append(operation)
+        for ticket in ticketsToDeleteFromCache {
+            ticketOperations[ticket] = nil
+        }
+        
+        for ticket in ticketsToAddToCache {
+            ticketOperations[ticket] = []
+        }
+    
+        for ticket in tickets {
+            let operationsInCache = Set(ticketOperations[ticket]!)
+            let operationsInStorage = Set(operations.filter({ $0.ticket == ticket }))
+            let operationsToDeleteFromCache = operationsInCache.subtracting(operationsInStorage)
+            let operationsToAddToCache = operationsInStorage.subtracting(operationsInCache)
+
+            for operation in operationsToDeleteFromCache {
+                ticketOperations[ticket]!.removeAll(where: { $0.id == operation.id })
+            }
+            
+            for operation in operationsToAddToCache {
+                ticketOperations[ticket, default: []].append(operation)
+            }
         }
     }
 }
