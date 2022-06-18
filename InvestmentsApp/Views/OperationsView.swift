@@ -13,55 +13,82 @@ struct OperationsView: View {
     @StateObject private var vm = OperationsViewModel()
     
     var body: some View {
-        VStack {
+        VStack(spacing: 2) {
             toolbar
             
-            List {
-                operationList
+            if vm.usingDateFilter {
+                dateFilter
             }
+
+            operationList
+                .listStyle(.sidebar)
+                .animation(.linear, value: vm.ticketOperations)
         }
+        .animation(.easeInOut, value: vm.usingDateFilter)
         .onAppear {
             vm.set(localStorage: localStorage)
         }
     }
     
     var toolbar: some View {
-        ZStack {
+        HStack {
+            Button {
+                vm.toggleDateFilter()
+            } label: {
+                Image(systemName: "calendar")
+            }
+            .buttonStyle(RoundButtonStyle())
+            
             Text("Operations")
                 .font(.headline)
                 .fontWeight(.bold)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
             Button {
                 viewRouter.showNewOperationView()
             } label: {
                 Image(systemName: "plus")
             }
-            .frame(maxWidth: .infinity, alignment: .trailing)
             .buttonStyle(RoundButtonStyle())
         }
-        .frame(height: 50)
+        .modifier(ToolBarModifier())
+    }
+    
+    var dateFilter: some View {
+        VStack {
+            DatePicker("Date start", selection: $vm.dateStart,
+                       in: ...Date(), displayedComponents: .date)
+            DatePicker("Date end", selection: $vm.dateEnd,
+                       in: ...Date(), displayedComponents: .date)
+        }
+        .padding()
+        .padding(.horizontal)
     }
     
     var operationList: some View {
-        ForEach(vm.tickets, id: \.self) { ticket in
-            Section {
-                ForEach(vm.ticketOperations[ticket]!) { operation in
-                    Button {
-                        viewRouter.showEditOperationView(operation: operation)
-                    } label: {
-                        OperationRow(operation: operation)
+        List {
+            ForEach(vm.tickets, id: \.self) { ticket in
+                Section {
+                    ForEach(vm.ticketOperations[ticket]!) { operation in
+                        Button {
+                            viewRouter.showEditOperationView(operation: operation)
+                        } label: {
+                            OperationRow(operation: operation)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
+                    .onDelete { indexSet in
+                        let operation = vm.ticketOperations[ticket]![indexSet.first!]
+                        localStorage.delete(operation: operation)
+                    }
+                } header: {
+                    Text(ticket)
+                        .font(.headline)
+                        .padding(.top, vm.tickets.first == ticket ? 10 : 0)
                 }
-                .onDelete { indexSet in
-                    let operation = vm.ticketOperations[ticket]![indexSet.first!]
-                    localStorage.delete(operation: operation)
-                }
-            } header: {
-                Text(ticket)
-                    .font(.headline)
             }
         }
+        .background(Color.clear)
     }
 }
 

@@ -11,18 +11,28 @@ struct PortfolioView: View {
     @EnvironmentObject private var stockData: StockData
     @ObservedObject var vm: PortfolioViewModel
     
+    @State private var refreshButtonRotation: Double = 0
+    
     var body: some View {
-        VStack {
+        VStack(spacing: 2) {
             toolBar
             
             List {
-                Section {
-                    summary
-                }
-                Section {
+                summary
+                    .listSectionSeparator(.hidden)
+                    .padding()
+                
+                
+//                Section {
                     details
-                }
+                    .listSectionSeparator(.hidden)
+                    .listRowSeparator(.hidden)
+//                } header: {
+//                    Text("Details")
+//                }
+                .padding()
             }
+            .listStyle(.plain)
         }
         .alert("Attention", isPresented: $stockData.showAlert) {
             Button("OK") {}
@@ -32,10 +42,34 @@ struct PortfolioView: View {
     }
     
     var toolBar: some View {
-        Text("Portfolio")
-            .font(.headline)
-            .fontWeight(.bold)
-            .frame(height: 50)
+        HStack {
+            Button {
+//                vm.toggleDateFilter()
+            } label: {
+                Image(systemName: "info")
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .buttonStyle(RoundButtonStyle())
+            
+            Text("Portfolio")
+                .font(.headline)
+                .fontWeight(.bold)
+            
+            HStack {
+                Spacer()
+    
+                Button {
+                    stockData.updateAllPrices()
+                    refreshButtonRotation += 360
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .rotationEffect(Angle(degrees: refreshButtonRotation))
+                .animation(.linear(duration: 1), value: refreshButtonRotation)
+                .buttonStyle(RoundButtonStyle())
+            }
+        }
+        .modifier(ToolBarModifier())
     }
     
     var summary: some View {
@@ -43,7 +77,7 @@ struct PortfolioView: View {
             if stockData.ticketsWithUpdatingPrices.isEmpty {
                 VStack(alignment: .leading) {
                     Text(vm.totalCost.toCurrencyString())
-                        .font(.system(size: 50, weight: .regular))
+                        .font(.system(size: 50, weight: .semibold))
                     Text("\(vm.totalProfit.toCurrencyString()) (\(vm.totalProfitability.toPercentString()))")
                         .font(.system(size: 25, weight: .regular))
                         .foregroundColor(vm.totalProfit >= 0 ? .green : .red)

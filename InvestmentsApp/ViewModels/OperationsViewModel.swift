@@ -10,6 +10,9 @@ import Combine
 
 class OperationsViewModel: ObservableObject {
     @Published private(set) var ticketOperations: [String: [MarketOperation]] = [:]
+    @Published var dateStart = Date()
+    @Published var dateEnd = Date()
+    @Published private(set) var usingDateFilter = false
     
     private var subsriptions = Set<AnyCancellable>()
     private var localStorage: LocalStorage!
@@ -27,38 +30,47 @@ class OperationsViewModel: ObservableObject {
     private func setupSubsriptions() {
         localStorage.$operations
             .sink { [unowned self] operations in
-                updateTicketOperations(operations: operations)
+                updateTicketOperations(operations: operations, usingFilter: usingDateFilter,
+                                       dateStart: dateStart, dateEnd: dateEnd)
+            }
+            .store(in: &subsriptions)
+        
+        $dateStart
+            .sink { [unowned self] date in
+                self.updateTicketOperations(operations: self.localStorage.operations, usingFilter: usingDateFilter,
+                                            dateStart: date, dateEnd: dateEnd)
+            }
+            .store(in: &subsriptions)
+        
+        $dateEnd
+            .sink { [unowned self] date in
+                self.updateTicketOperations(operations: self.localStorage.operations, usingFilter: usingDateFilter,
+                                            dateStart: dateStart, dateEnd: date)
+            }
+            .store(in: &subsriptions)
+        
+        $usingDateFilter
+            .delay(for: 0.5, scheduler: DispatchQueue.main)
+            .sink { [unowned self] using in
+                self.updateTicketOperations(operations: self.localStorage.operations, usingFilter: using,
+                                            dateStart: dateStart, dateEnd: dateEnd)
             }
             .store(in: &subsriptions)
     }
     
-    private func updateTicketOperations(operations: [MarketOperation]) {
-        let ticketsInStorage = Set(operations.map { $0.ticket })
-        let ticketsInCache = Set(ticketOperations.keys)
-        let ticketsToDeleteFromCache = ticketsInCache.subtracting(ticketsInStorage)
-        let ticketsToAddToCache = ticketsInStorage.subtracting(ticketsInCache)
+    private func updateTicketOperations(operations: [MarketOperation], usingFilter: Bool, dateStart: Date, dateEnd: Date) {
+        ticketOperations = [:]
         
-        for ticket in ticketsToDeleteFromCache {
-            ticketOperations[ticket] = nil
-        }
-        
-        for ticket in ticketsToAddToCache {
-            ticketOperations[ticket] = []
-        }
-    
-        for ticket in tickets {
-            let operationsInCache = Set(ticketOperations[ticket]!)
-            let operationsInStorage = Set(operations.filter({ $0.ticket == ticket }))
-            let operationsToDeleteFromCache = operationsInCache.subtracting(operationsInStorage)
-            let operationsToAddToCache = operationsInStorage.subtracting(operationsInCache)
+        let dateStart = dateStart.beginningOfTheDay()
+        let dateEnd = dateEnd.endOfTheDay()
+        let operations = operations.filter({ !usingFilter || (dateStart <= $0.date && $0.date <= dateEnd) })
 
-            for operation in operationsToDeleteFromCache {
-                ticketOperations[ticket]!.removeAll(where: { $0.id == operation.id })
-            }
-            
-            for operation in operationsToAddToCache {
-                ticketOperations[ticket, default: []].append(operation)
-            }
+        for operation in operations {
+            ticketOperations[operation.ticket, default: []].append(operation)
         }
+    }
+    
+    func toggleDateFilter() {
+        usingDateFilter.toggle()
     }
 }

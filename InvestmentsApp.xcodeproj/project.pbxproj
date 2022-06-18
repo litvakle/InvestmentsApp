@@ -14,6 +14,7 @@
 		3A60274C285C449A006DEA2B /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A60274B285C4499006DEA2B /* Color+Extension.swift */; };
 		3A60274F285C6AC6006DEA2B /* RoundButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A60274E285C6AC5006DEA2B /* RoundButtonStyle.swift */; };
 		3A602751285C8BB6006DEA2B /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A602750285C8BB5006DEA2B /* Double+Extension.swift */; };
+		3AA218C0285D9B3800965C3A /* ToolBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA218BF285D9B3800965C3A /* ToolBarModifier.swift */; };
 		3AEFA2DE284E32510021330F /* InvestmentsAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */; };
 		3AEFA2E0284E32510021330F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEFA2DF284E32510021330F /* ContentView.swift */; };
 		3AEFA2E2284E32520021330F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AEFA2E1284E32520021330F /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 		3A60274B285C4499006DEA2B /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		3A60274E285C6AC5006DEA2B /* RoundButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButtonStyle.swift; sourceTree = "<group>"; };
 		3A602750285C8BB5006DEA2B /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
+		3AA218BF285D9B3800965C3A /* ToolBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarModifier.swift; sourceTree = "<group>"; };
 		3AEFA2DA284E32510021330F /* InvestmentsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvestmentsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestmentsAppApp.swift; sourceTree = "<group>"; };
 		3AEFA2DF284E32510021330F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				3A60274E285C6AC5006DEA2B /* RoundButtonStyle.swift */,
+				3AA218BF285D9B3800965C3A /* ToolBarModifier.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				3AEFA30D284F38A50021330F /* Date+Extension.swift in Sources */,
 				3AEFA2E0284E32510021330F /* ContentView.swift in Sources */,
 				3AEFA300284F33BC0021330F /* AlphaVintageService.swift in Sources */,
+				3AA218C0285D9B3800965C3A /* ToolBarModifier.swift in Sources */,
 				3A4421C828519D8E00C0291C /* MarketOperationsContainer.xcdatamodeld in Sources */,
 				3AEFA2F2284E35440021330F /* PortfolioView.swift in Sources */,
 				3AEFA2F9284F334F0021330F /* OperationsViewModel.swift in Sources */,

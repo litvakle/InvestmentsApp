@@ -12,9 +12,9 @@ struct OperationView: View {
     @EnvironmentObject private var viewRouter: ViewsRouter
     @ObservedObject var vm: OperationViewModel
     
-    @State var dissappearAnchor: UnitPoint = .topLeading
-    
-    @FocusState var activeTextField: OperationViewModel.OperationTextField?
+    @FocusState private var activeTextField: OperationViewModel.OperationTextField?
+
+    @State private var backButtonRotation: Double = 0
     
     var body: some View {
         ZStack {
@@ -25,11 +25,12 @@ struct OperationView: View {
                 
                 List {
                     inputFields
-                        
+                        .listRowSeparator(.hidden)
+                    
                     totalSum
+                        .listRowSeparator(.hidden)
                 }
-                .padding()
-                .listStyle(.plain)
+                .listStyle(.inset)
                 
                 Spacer()
                 
@@ -41,7 +42,7 @@ struct OperationView: View {
                             .padding()
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
-                    .transition(.scale(scale: 0, anchor: .trailing))
+                    .transition(.move(edge: .trailing))
                 }
             }
             .animation(.easeInOut, value: vm.textFieldIsValid)
@@ -49,7 +50,7 @@ struct OperationView: View {
                 vm.activeTextField = newValue
             }
             .onChange(of: vm.activeTextField) { newValue in
-                activeTextField = newValue
+                    activeTextField = newValue
             }
         }
     }
@@ -57,9 +58,14 @@ struct OperationView: View {
     var toolbar: some View {
         HStack {
             Button {
-                viewRouter.showMainView()
+                backButtonRotation = 180
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                    viewRouter.showMainView()
+                }
             } label: {
                 Image(systemName: "chevron.backward")
+                    .rotationEffect(Angle(degrees: backButtonRotation))
+                    .animation(.easeInOut(duration: 0.5), value: backButtonRotation)
             }
             .buttonStyle(RoundButtonStyle())
             
@@ -79,6 +85,7 @@ struct OperationView: View {
             .buttonStyle(RoundButtonStyle())
             .disabled(!vm.canSave)
         }
+        .modifier(ToolBarModifier())
     }
     
     var totalSum: some View {

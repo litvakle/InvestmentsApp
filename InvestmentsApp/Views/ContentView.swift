@@ -20,13 +20,13 @@ struct ContentView: View {
             
             if case .newOperation = viewRouter.currentView {
                 OperationView(vm: OperationViewModel())
-                    .transition(.scale)
+                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .move(edge: .trailing)))
                     .zIndex(1)
             }
             
             if case .editOperation(let operation) = viewRouter.currentView {
                 OperationView(vm: OperationViewModel(operation: operation))
-                    .transition(.scale)
+                    .transition(.move(edge: .trailing))
                     .zIndex(1)
             }
         }

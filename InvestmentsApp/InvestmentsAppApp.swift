@@ -13,6 +13,11 @@ struct InvestmentsAppApp: App {
     @StateObject var stockData = StockData(stockMarketService: AlphaVintageService())
     @StateObject var viewRouter = ViewsRouter()
     
+    init() {
+        UITableView.appearance().backgroundColor = .systemBackground
+        UITableView.appearance().keyboardDismissMode = .onDrag
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
