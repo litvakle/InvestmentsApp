@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChartView: View {
-    var chartData: [PortfolioViewModel.ChartData] = []
+    var chartData: [ChartData] = []
     
     private var maxY: Double = 0
     private var minY: Double = 0
@@ -17,7 +17,7 @@ struct ChartView: View {
     @State private var animationDone = false
     @State private var percentage: CGFloat = 0
     
-    init(chartData: [PortfolioViewModel.ChartData]) {
+    init(chartData: [ChartData]) {
         self.chartData = chartData
         print("chartview init \(chartData.count)")
         maxY = chartData.map({ $0.value }).max() ?? 0

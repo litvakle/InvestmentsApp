@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PortfolioView: View {
     @EnvironmentObject private var stockData: StockData
+    @EnvironmentObject private var viewRouter: ViewsRouter
     @ObservedObject var vm: PortfolioViewModel
     
     @State private var refreshButtonRotation: Double = 0
@@ -38,7 +39,7 @@ struct PortfolioView: View {
     var toolBar: some View {
         HStack {
             Button {
-//                vm.toggleDateFilter()
+                viewRouter.showInfoView()
             } label: {
                 Image(systemName: "info")
             }
@@ -109,7 +110,7 @@ struct PortfolioView: View {
 
 struct DetailsRowView: View {
     @EnvironmentObject private var stockData: StockData
-    var item: PortfolioViewModel.PortfolioItem
+    var item: PortfolioItem
     
     var body: some View {
         HStack {

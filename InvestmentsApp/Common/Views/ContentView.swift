@@ -30,6 +30,12 @@ struct ContentView: View {
                     .transition(.move(edge: .trailing))
                     .zIndex(1)
             }
+            
+            if case .info = viewRouter.currentView {
+                InfoView()
+                    .transition(.move(edge: .top))
+                    .zIndex(1)
+            }
         }
         .animation(.easeInOut, value: viewRouter.currentView)
         .onAppear {

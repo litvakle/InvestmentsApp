@@ -14,6 +14,7 @@ class ViewsRouter: ObservableObject {
         case main
         case newOperation
         case editOperation(operation: MarketOperation)
+        case info
     }
     
     func showNewOperationView() {
@@ -26,5 +27,9 @@ class ViewsRouter: ObservableObject {
     
     func showMainView() {
         currentView = .main
+    }
+    
+    func showInfoView() {
+        currentView = .info
     }
 }

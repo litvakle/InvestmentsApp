@@ -192,6 +192,7 @@
 				3A42E9822861F492004507E8 /* Portfolio */,
 				3A42E98A2861F695004507E8 /* Operations */,
 				3A42E9902861F9D3004507E8 /* StockData */,
+				3A42E99428620482004507E8 /* Info */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -240,6 +241,22 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		3A42E99428620482004507E8 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				3A42E9952862048C004507E8 /* Views */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		3A42E9952862048C004507E8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3AE404C62861A5E0008E46A0 /* InfoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		3A4421C528519D4600C0291C /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -276,7 +293,6 @@
 		3AEFA2DC284E32510021330F /* InvestmentsApp */ = {
 			isa = PBXGroup;
 			children = (
-				3AE404C62861A5E0008E46A0 /* InfoView.swift */,
 				3AEFA2DD284E32510021330F /* InvestmentsAppApp.swift */,
 				3A42E98F2861F9A3004507E8 /* Common */,
 				3A42E98E2861F85A004507E8 /* Features */,
