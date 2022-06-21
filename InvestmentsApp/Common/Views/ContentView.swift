@@ -13,6 +13,7 @@ struct ContentView: View {
     @EnvironmentObject private var stockData: StockData
     
     @StateObject private var portfolioViewModel = PortfolioViewModel()
+    @StateObject private var operationsViewModel = OperationsViewModel()
     
     var body: some View {
         ZStack {
@@ -32,6 +33,7 @@ struct ContentView: View {
         }
         .animation(.easeInOut, value: viewRouter.currentView)
         .onAppear {
+            operationsViewModel.set(localStorage: localStorage)
             portfolioViewModel.subscribeTo(localStorage: localStorage,
                                            stockData: stockData)
         }
@@ -46,11 +48,8 @@ struct ContentView: View {
                         Text("Portfolio")
                     }
                 }
-                .refreshable {
-                    stockData.updateAllPrices()
-                }
             
-            OperationsView()
+            OperationsView(vm: operationsViewModel)
                 .tabItem {
                     VStack {
                         Image(systemName: "list.bullet.circle")

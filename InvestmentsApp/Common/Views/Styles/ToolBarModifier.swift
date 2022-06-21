@@ -12,7 +12,7 @@ struct ToolBarModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding(.bottom)
-            .frame(height: 50)
+            .frame(height: 60)
             .background(
                 Color.themeBackground
                 .edgesIgnoringSafeArea(.top)

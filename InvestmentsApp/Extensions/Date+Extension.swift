@@ -15,6 +15,13 @@ extension Date {
         return calendar.date(from: dateComponents) ?? Date()
     }
     
+    static func from(dateString: String, dateFormat: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        
+        return dateFormatter.date(from: dateString) ?? Date()
+    }
+    
     func beginningOfTheDay() -> Date {
         let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: self)
 

@@ -10,7 +10,7 @@ import Combine
 
 class LocalStorage: ObservableObject {
     @Published var operations: [MarketOperation] = []
-    
+
     var storageManager: LocalStorageManager
     
     init(storageManager: LocalStorageManager) {
@@ -26,16 +26,15 @@ class LocalStorage: ObservableObject {
     func save(operation: MarketOperation) {
         storageManager.save(operation: operation)
         
-        if let index = operations.firstIndex(where: { $0.id == operation.id }) {
-            operations[index] = operation
+        if let index = self.operations.firstIndex(where: { $0.id == operation.id }) {
+            self.operations[index] = operation
         } else {
-            operations.append(operation)
+            self.operations.append(operation)
         }
     }
     
     func delete(operation: MarketOperation) {
-        storageManager.delete(operation: operation)
-        
-        operations.removeAll(where: { $0.id == operation.id })
+        self.storageManager.delete(operation: operation)
+        self.operations.removeAll(where: { $0.id == operation.id })
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct InvestmentsAppApp: App {
     @StateObject var localStorage = LocalStorage(storageManager: CoreDataManager())
-    @StateObject var stockData = StockData(stockMarketService: AlphaVintageService())
+    @StateObject var stockData = StockData(stockMarketService: TwelveDataService())
     @StateObject var viewRouter = ViewsRouter()
     
     init() {

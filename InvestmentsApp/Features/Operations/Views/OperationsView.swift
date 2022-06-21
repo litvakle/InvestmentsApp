@@ -10,7 +10,7 @@ import SwiftUI
 struct OperationsView: View {
     @EnvironmentObject private var localStorage: LocalStorage
     @EnvironmentObject private var viewRouter: ViewsRouter
-    @StateObject private var vm = OperationsViewModel()
+    @ObservedObject var vm: OperationsViewModel
     
     var body: some View {
         VStack(spacing: 2) {
@@ -25,9 +25,6 @@ struct OperationsView: View {
                 .animation(.linear, value: vm.ticketOperations)
         }
         .animation(.easeInOut, value: vm.usingDateFilter)
-        .onAppear {
-            vm.set(localStorage: localStorage)
-        }
     }
     
     var toolbar: some View {
@@ -121,16 +118,19 @@ struct OperationRow: View {
 }
 
 struct OperationsView_Previews: PreviewProvider {
+    static var vm = OperationsViewModel()
+    static var localStorage = LocalStorage(storageManager: MockManager())
     static var previews: some View {
         Group {
-            OperationsView()
-                .environmentObject(LocalStorage(storageManager: MockManager()))
-                .environmentObject(ViewsRouter())
-            
-            OperationsView()
-                .environmentObject(LocalStorage(storageManager: MockManager()))
-                .environmentObject(ViewsRouter())
+            OperationsView(vm: vm)
+                
+            OperationsView(vm: vm)
                 .preferredColorScheme(.dark)
+        }
+        .environmentObject(localStorage)
+        .environmentObject(ViewsRouter())
+        .onAppear {
+            vm.set(localStorage: localStorage)
         }
     }
 }

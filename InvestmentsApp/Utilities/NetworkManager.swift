@@ -50,33 +50,11 @@ class NetworkManager {
             .eraseToAnyPublisher()
     }
     
-//    static func handleCompletion(_ completion: Subscribers.Completion<Error>) -> Result<Bool, APIError> {
-//        switch completion {
-//        case .finished:
-//            return .success(true)
-//        case .failure(let error):
-//            if let error = error as? DecodingError {
-//                var errorToReport = error.localizedDescription
-//                switch error {
-//                case .dataCorrupted(let context):
-//                    let details = context.underlyingError?.localizedDescription ?? context.codingPath.map { $0.stringValue }.joined(separator: ".")
-//                    errorToReport = "\(context.debugDescription) - (\(details))"
-//                case .keyNotFound(let key, let context):
-//                    let details = context.underlyingError?.localizedDescription ?? context.codingPath.map { $0.stringValue }.joined(separator: ".")
-//                    errorToReport = "\(context.debugDescription) (key: \(key), \(details))"
-//                case .typeMismatch(let type, let context), .valueNotFound(let type, let context):
-//                    let details = context.underlyingError?.localizedDescription ?? context.codingPath.map { $0.stringValue }.joined(separator: ".")
-//                    errorToReport = "\(context.debugDescription) (type: \(type), \(details))"
-//                @unknown default:
-//                    break
-//                }
-//
-//                return .failure(APIError.parserError(errorToReport))
-//            } else if let error = error as? APIError {
-//                return .failure(error)
-//            } else {
-//                return .failure(APIError.unknownError(error.localizedDescription))
-//            }
-//        }
-//    }
+    static func convertToAPIError(error: Error) -> APIError {
+        if let error = error as? NetworkManager.APIError {
+            return error
+        } else {
+            return NetworkManager.APIError.unknownError
+        }
+    }
 }

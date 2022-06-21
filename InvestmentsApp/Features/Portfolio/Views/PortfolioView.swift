@@ -17,22 +17,16 @@ struct PortfolioView: View {
         VStack(spacing: 2) {
             toolBar
             
-            List {
+            ScrollView {
                 summary
-                    .listSectionSeparator(.hidden)
                     .padding()
                 
+                chartView
+                    .padding()
                 
-//                Section {
-                    details
-                    .listSectionSeparator(.hidden)
-                    .listRowSeparator(.hidden)
-//                } header: {
-//                    Text("Details")
-//                }
+                details
                 .padding()
             }
-            .listStyle(.plain)
         }
         .alert("Attention", isPresented: $stockData.showAlert) {
             Button("OK") {}
@@ -59,7 +53,8 @@ struct PortfolioView: View {
                 Spacer()
     
                 Button {
-                    stockData.updateAllPrices()
+                    stockData.updateAllCurrentPrices()
+                    stockData.updateAllHistoricalPrices()
                     refreshButtonRotation += 360
                 } label: {
                     Image(systemName: "arrow.clockwise")
@@ -73,30 +68,39 @@ struct PortfolioView: View {
     }
     
     var summary: some View {
-        Group {
-            if stockData.ticketsWithUpdatingPrices.isEmpty {
-                VStack(alignment: .leading) {
-                    Text(vm.totalCost.toCurrencyString())
-                        .font(.system(size: 50, weight: .semibold))
-                    Text("\(vm.totalProfit.toCurrencyString()) (\(vm.totalProfitability.toPercentString()))")
-                        .font(.system(size: 25, weight: .regular))
-                        .foregroundColor(vm.totalProfit >= 0 ? .green : .red)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .transition(.scale)
-            } else {
+        VStack {
+            VStack(alignment: .leading) {
+                Text(vm.totalCost.toCurrencyString())
+                    .font(.system(size: 50, weight: .semibold))
+                Text("\(vm.totalProfit.toCurrencyString()) (\(vm.totalProfitability.toPercentString()))")
+                    .font(.system(size: 25, weight: .regular))
+                    .foregroundColor(vm.totalProfit >= 0 ? .green : .red)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .opacity(vm.portfolioIsUpdating ? 0 : 1)
+        }
+        .animation(.easeInOut, value: vm.portfolioIsUpdating)
+    }
+    
+    var chartView: some View {
+        VStack(alignment: .center) {
+            if stockData.isUpdatingHistoricalPrices || vm.chartIsUpdating {
                 ProgressView()
                     .frame(maxWidth: .infinity, alignment: .center)
+            } else {
+                ChartView(chartData: vm.profitChartData)
+                    .transition(.scale)
             }
         }
-        .animation(.easeInOut, value: stockData.ticketsWithUpdatingPrices)
+        .frame(height: 200)
+        .animation(.easeInOut, value: stockData.isUpdatingHistoricalPrices)
+        .animation(.easeInOut, value: vm.chartIsUpdating)
     }
     
     var details: some View {
         VStack {
             ForEach(vm.items) { item in
                 DetailsRowView(item: item)
-                    .listRowBackground(Color.yellow)
                     .padding(.vertical, 5)
             }
         }
@@ -123,7 +127,7 @@ struct DetailsRowView: View {
             
             Spacer()
             
-            if stockData.ticketsWithUpdatingPrices.contains(item.ticket) {
+            if stockData.ticketsWithUpdatingCurrentPrices.contains(item.ticket) {
                 ProgressView()
             } else if item.price != 0 {
                 VStack(alignment: .trailing) {
